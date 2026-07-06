@@ -1,5 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { C, SOCIALS } from '../data/constants';
+import logoIcon from '../assets/logo-icon.png';
 
 // ── Stars ─────────────────────────────────────────────────────
 export const Stars = ({ n }) => (
@@ -26,31 +27,22 @@ export const Badge = ({ type }) => {
 };
 
 // ── Logo ──────────────────────────────────────────────────────
-export const Logo = ({ size = 'md', dark = false }) => {
+export const Logo = ({ size = 'md' }) => {
   const sz = {
-    lg: { box: 46, font: 26, name: 22, sub: 12 },
-    md: { box: 36, font: 20, name: 17, sub: 10 },
-    sm: { box: 28, font: 15, name: 14, sub: 0  },
+    lg: { box: 46, name: 22, sub: 12 },
+    md: { box: 36, name: 17, sub: 10 },
+    sm: { box: 28, name: 14, sub: 0  },
   }[size];
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{
-        width: sz.box, height: sz.box,
-        background: dark ? C.gold : C.greenDark,
-        borderRadius: sz.box * 0.25,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        flexShrink: 0,
-      }}>
-        <span style={{ fontSize: sz.font, fontWeight: 800, color: dark ? C.black : C.amber, lineHeight: 1 }}>N</span>
-      </div>
+      <img src={logoIcon} alt="Netsadr" style={{ height: sz.box, width: 'auto', flexShrink: 0 }} />
       <div>
-        <div style={{ fontSize: sz.name, fontWeight: 700, lineHeight: 1.1, color: dark ? C.gold : '#fff', letterSpacing: -0.4 }}>
-          Netsadr<span style={{ color: C.amber }}>.</span>
-          <span style={{ color: dark ? 'rgba(201,168,76,0.4)' : 'rgba(255,255,255,0.4)', fontWeight: 400 }}>et</span>
+        <div style={{ fontSize: sz.name, fontWeight: 700, lineHeight: 1.1, color: '#fff', letterSpacing: -0.4 }}>
+          Netsa<span style={{ color: C.green }}>Dr</span>
         </div>
         {sz.sub > 0 && (
-          <div style={{ fontSize: sz.sub, color: dark ? 'rgba(201,168,76,0.4)' : 'rgba(255,255,255,0.4)', marginTop: 1 }}>
-            ነፃ ድር — netsadr.com
+          <div style={{ fontSize: sz.sub, color: 'rgba(255,255,255,0.4)', marginTop: 1 }}>
+            netsadr.et
           </div>
         )}
       </div>
@@ -129,9 +121,9 @@ export const Footer = ({ onNav }) => (
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 28, marginBottom: 24, flexWrap: 'wrap' }}>
         <div>
-          <Logo dark />
+          <Logo />
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 12, lineHeight: 1.8 }}>
-            Ethiopia's free business network.<br />
+            Butajira's free business directory.<br />
             ነፃ ድር — ሁሉንም ኢትዮጵያ
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
