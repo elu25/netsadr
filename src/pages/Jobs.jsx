@@ -2,17 +2,11 @@ import { useState } from 'react';
 import { C } from '../data/constants';
 
 const JOBS = [
-  { id:1,  title:'Software Developer',          company:'Buna Tech Solutions',     city:'Addis Ababa', salary:'ETB 15,000–25,000', type:'Full-time',  sector:'Tech',         emoji:'💻', posted:'2 days ago'  },
-  { id:2,  title:'Accountant',                  company:'Selam Real Estate',       city:'Adama',       salary:'ETB 8,000–12,000',  type:'Full-time',  sector:'Finance',      emoji:'📊', posted:'3 days ago'  },
-  { id:3,  title:'Hotel Receptionist',          company:'Gondar Hotel & Spa',      city:'Gondar',      salary:'ETB 5,000–7,000',   type:'Full-time',  sector:'Hospitality',  emoji:'🏨', posted:'1 day ago'   },
-  { id:4,  title:'Civil Engineer',              company:'Ethio Steel Industries',  city:'Addis Ababa', salary:'ETB 20,000–35,000', type:'Full-time',  sector:'Construction', emoji:'🏗', posted:'5 days ago'  },
-  { id:5,  title:'Sales Representative',        company:'Bright Ethiopia',         city:'Hawassa',     salary:'ETB 6,000–9,000',   type:'Full-time',  sector:'Sales',        emoji:'📦', posted:'Today'       },
   { id:6,  title:'Graphic Designer',            company:'Netsadr.et',              city:'Butajira',    salary:'ETB 7,000–10,000',  type:'Part-time',  sector:'Design',       emoji:'🎨', posted:'Today'       },
-  { id:7,  title:'Medical Doctor',              company:'Addis Medical Center',    city:'Addis Ababa', salary:'ETB 35,000–50,000', type:'Full-time',  sector:'Healthcare',   emoji:'🏥', posted:'1 week ago'  },
   { id:8,  title:'Agricultural Extension Agent',company:'Highlands Farms',         city:'Butajira',    salary:'ETB 6,500–8,500',   type:'Full-time',  sector:'Agriculture',  emoji:'🌿', posted:'4 days ago'  },
 ];
 
-const SECTORS = ['All','Tech','Finance','Hospitality','Construction','Sales','Design','Healthcare','Agriculture'];
+const SECTORS = ['All','Design','Agriculture'];
 
 export default function Jobs() {
   const [sector, setSector] = useState('All');
@@ -29,7 +23,7 @@ export default function Jobs() {
       <div style={{ background: `linear-gradient(135deg, ${C.black}, ${C.charcoal})`, padding: '32px 20px 28px', borderBottom: `3px solid ${C.gold}` }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <h1 style={{ color: '#fff', fontSize: 26, fontWeight: 800, margin: '0 0 6px' }}>💼 Jobs</h1>
-          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, marginBottom: 20 }}>Find jobs and post vacancies across Ethiopia</p>
+          <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14, marginBottom: 20 }}>Find jobs and post vacancies in Butajira</p>
           <div style={{ display: 'flex', gap: 10 }}>
             <div style={{ display: 'flex', background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, overflow: 'hidden', flex: 1 }}>
               <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search jobs, companies…"

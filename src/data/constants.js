@@ -63,10 +63,9 @@ export const INSTITUTIONS = [
 ];
 
 // ── Cities ────────────────────────────────────────────────────
-export const CITIES = [
-  'All Ethiopia','Addis Ababa','Adama','Hawassa',
-  'Gondar','Mekelle','Bishoftu','Jimma','Bahir Dar','Butajira',
-];
+// Butajira only, matching current scope. Add a city here only once
+// you're actually accepting and publishing listings from it.
+export const CITIES = ['Butajira'];
 
 // ── Ticker messages ───────────────────────────────────────────
 // Keep these true. Swap in real listing names as you seed — do not
