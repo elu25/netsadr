@@ -65,14 +65,19 @@ export default function Home({ onNav }) {
             </button>
           </div>
 
-          {/* Quick tags */}
+          {/* Quick tags — derived from categories that actually have listings, not a hardcoded guess */}
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 30 }}>
-            {['🍽 Restaurants','🏨 Hotels','🏠 Real Estate','📦 Wholesale','🏥 Healthcare','🏦 Banks'].map(t => (
-              <span key={t} onClick={() => setSearch(t.slice(2))}
-                style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '4px 14px', color: '#fff', fontSize: 12, cursor: 'pointer' }}>
-                {t}
-              </span>
-            ))}
+            {CATEGORIES
+              .map(c => ({ ...c, count: LISTINGS.filter(l => l.cat === c.label).length }))
+              .filter(c => c.count > 0)
+              .sort((a, b) => b.count - a.count)
+              .slice(0, 6)
+              .map(c => (
+                <span key={c.label} onClick={() => setSearch(c.label)}
+                  style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '4px 14px', color: '#fff', fontSize: 12, cursor: 'pointer' }}>
+                  {c.icon} {c.label}
+                </span>
+              ))}
           </div>
 
           {/* Stats — real numbers only. Never hardcode these. */}
