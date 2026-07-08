@@ -46,9 +46,12 @@ export default function Home({ onNav }) {
 
           {/* Search */}
           <div style={{ display: 'flex', maxWidth: 580, margin: '0 auto 20px', borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
-            <select style={{ background: '#fff', border: 'none', padding: '0 14px', fontSize: 13, color: '#444', minWidth: 120, borderRight: '1px solid #e8e8e8', cursor: 'pointer' }}>
-              <option>All categories</option>
-              {CATEGORIES.map(c => <option key={c.label}>{c.label}</option>)}
+            <select
+              value={search}
+              onChange={e => setSearch(e.target.value === 'All categories' ? '' : e.target.value)}
+              style={{ background: '#fff', border: 'none', padding: '0 14px', fontSize: 13, color: '#444', minWidth: 120, borderRight: '1px solid #e8e8e8', cursor: 'pointer' }}>
+              <option value="">All categories</option>
+              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.label}</option>)}
             </select>
             <input
               value={search}
@@ -56,7 +59,8 @@ export default function Home({ onNav }) {
               placeholder="Search businesses, products, services…"
               style={{ flex: 1, border: 'none', padding: '14px 16px', fontSize: 14, color: '#333', outline: 'none' }}
             />
-            <button style={{ background: C.gold, border: 'none', padding: '14px 22px', fontSize: 13, fontWeight: 700, color: C.black, cursor: 'pointer' }}>
+            <button onClick={() => document.getElementById('listings-section')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ background: C.gold, border: 'none', padding: '14px 22px', fontSize: 13, fontWeight: 700, color: C.black, cursor: 'pointer' }}>
               Search
             </button>
           </div>
@@ -126,7 +130,7 @@ export default function Home({ onNav }) {
         </div>
 
         {/* ── LISTINGS ── */}
-        <div style={{ marginTop: 32 }}>
+        <div id="listings-section" style={{ marginTop: 32 }}>
           <div style={{ display: 'flex', gap: 3, borderBottom: `2px solid ${C.greenLight}` }}>
             {[['featured','⭐ Featured'],['toprated','🏆 Top Rated'],['new','🆕 New'],['wholesale','📦 Wholesale']].map(([t, label]) => (
               <button key={t} onClick={() => { setTab(t); setSearch(''); }} style={{
@@ -167,18 +171,22 @@ export default function Home({ onNav }) {
                 <div style={{ padding: '12px 14px' }}>
                   <div style={{ fontSize: 10, color: C.green, fontWeight: 700, marginBottom: 3, textTransform: 'uppercase', letterSpacing: 0.3 }}>{l.cat}</div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 5, lineHeight: 1.3 }}>{l.name}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#888', marginBottom: 4 }}>
-                    <Stars n={l.rating} />
-                    <span>{l.rating}.0</span>
-                    <span style={{ color: '#ddd' }}>|</span>
-                    <span>{l.reviews} reviews</span>
-                  </div>
+                  {l.rating > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#888', marginBottom: 4 }}>
+                      <Stars n={l.rating} />
+                      <span>{l.rating}.0</span>
+                      <span style={{ color: '#ddd' }}>|</span>
+                      <span>{l.reviews} reviews</span>
+                    </div>
+                  )}
                   <div style={{ fontSize: 11, color: '#aaa', marginBottom: 11 }}>📍 {l.city}</div>
                   <div style={{ display: 'flex', gap: 6 }}>
-                    <button onClick={e => { e.stopPropagation(); window.open(`tel:${l.phone}`); }}
-                      style={{ flex: 1, background: '#f7f7f6', border: '1px solid #eee', borderRadius: 7, padding: '7px 4px', fontSize: 11, cursor: 'pointer', color: '#666' }}>
-                      📞 Call
-                    </button>
+                    {l.phone && (
+                      <button onClick={e => { e.stopPropagation(); window.open(`tel:${l.phone}`); }}
+                        style={{ flex: 1, background: '#f7f7f6', border: '1px solid #eee', borderRadius: 7, padding: '7px 4px', fontSize: 11, cursor: 'pointer', color: '#666' }}>
+                        📞 Call
+                      </button>
+                    )}
                     <button onClick={e => e.stopPropagation()}
                       style={{ flex: 1, background: '#f7f7f6', border: '1px solid #eee', borderRadius: 7, padding: '7px 4px', fontSize: 11, cursor: 'pointer', color: '#666' }}>
                       🤍 Save
