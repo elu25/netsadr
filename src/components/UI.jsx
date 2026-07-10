@@ -119,7 +119,7 @@ export const Ticker = ({ text }) => (
 export const Footer = ({ onNav }) => (
   <footer style={{ background: C.black, padding: '32px 20px 20px', borderTop: `1px solid rgba(201,168,76,0.12)` }}>
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 28, marginBottom: 24, flexWrap: 'wrap' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 28, marginBottom: 24 }}>
         <div>
           <Logo />
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 12, lineHeight: 1.8 }}>
