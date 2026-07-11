@@ -57,11 +57,11 @@ export default function Home({ onNav }) {
           </p>
 
           {/* Search */}
-          <div style={{ display: 'flex', maxWidth: 580, margin: '0 auto 20px', borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: 580, margin: '0 auto 20px', borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
             <select
               value={search}
               onChange={e => setSearch(e.target.value === 'All categories' ? '' : e.target.value)}
-              style={{ background: '#fff', border: 'none', padding: '0 14px', fontSize: 13, color: '#444', minWidth: 120, borderRight: '1px solid #e8e8e8', cursor: 'pointer' }}>
+              style={{ flex: '1 1 130px', minWidth: 0, background: '#fff', border: 'none', padding: '0 14px', fontSize: 13, color: '#444', borderRight: '1px solid #e8e8e8', cursor: 'pointer' }}>
               <option value="">All categories</option>
               {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.label}</option>)}
             </select>
@@ -69,10 +69,10 @@ export default function Home({ onNav }) {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search businesses, products, services…"
-              style={{ flex: 1, border: 'none', padding: '14px 16px', fontSize: 14, color: '#333', outline: 'none' }}
+              style={{ flex: '4 1 180px', minWidth: 0, border: 'none', padding: '14px 16px', fontSize: 14, color: '#333', outline: 'none' }}
             />
             <button onClick={() => document.getElementById('listings-section')?.scrollIntoView({ behavior: 'smooth' })}
-              style={{ background: C.gold, border: 'none', padding: '14px 22px', fontSize: 13, fontWeight: 700, color: C.black, cursor: 'pointer' }}>
+              style={{ flex: '0 0 auto', background: C.gold, border: 'none', padding: '14px 22px', fontSize: 13, fontWeight: 700, color: C.black, cursor: 'pointer' }}>
               Search
             </button>
           </div>
