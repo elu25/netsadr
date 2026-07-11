@@ -18,6 +18,18 @@ export default function Home({ onNav }) {
   // you don't have.
   const cities = ['All', ...new Set(LISTINGS.map(l => l.city))];
 
+  // Used by category tiles and quick tags — sets the filter AND jumps to
+  // results immediately, so the person doesn't have to scroll to find what
+  // they just clicked. NOT used on the text input itself, since scrolling
+  // on every keystroke while someone is mid-typing would be worse than the
+  // original problem.
+  const filterAndScroll = (term) => {
+    setSearch(term);
+    requestAnimationFrame(() => {
+      document.getElementById('listings-section')?.scrollIntoView({ behavior: 'smooth' });
+    });
+  };
+
   const filtered = LISTINGS.filter(l => {
     const matchTab  = search ? true : l.tabs.includes(tab);
     const matchCity = city === 'All' || l.city === city;
@@ -73,7 +85,7 @@ export default function Home({ onNav }) {
               .sort((a, b) => b.count - a.count)
               .slice(0, 6)
               .map(c => (
-                <span key={c.label} onClick={() => setSearch(c.label)}
+                <span key={c.label} onClick={() => filterAndScroll(c.label)}
                   style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '4px 14px', color: '#fff', fontSize: 12, cursor: 'pointer' }}>
                   {c.icon} {c.label}
                 </span>
@@ -112,27 +124,29 @@ export default function Home({ onNav }) {
 
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px' }}>
 
-        {/* ── CATEGORIES — counts computed live, no fake numbers ── */}
-        <div style={{ padding: '28px 0 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, color: C.black }}>Browse by category</div>
+        {/* ── CATEGORIES — hidden once a filter is active so results aren't buried below it ── */}
+        {!search && (
+          <div style={{ padding: '28px 0 0' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.black }}>Browse by category</div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))', gap: 10 }}>
+              {CATEGORIES.map(c => {
+                const n = LISTINGS.filter(l => l.cat === c.label).length;
+                return (
+                  <div key={c.label} onClick={() => filterAndScroll(c.label)}
+                    style={{ background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: '14px 8px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.15s' }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = '#eee'; e.currentTarget.style.transform = 'none'; }}>
+                    <div style={{ fontSize: 26, marginBottom: 6 }}>{c.icon}</div>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: C.black, lineHeight: 1.3, marginBottom: 2 }}>{c.label}</div>
+                    <div style={{ fontSize: 10, color: '#aaa' }}>{n}</div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))', gap: 10 }}>
-            {CATEGORIES.map(c => {
-              const n = LISTINGS.filter(l => l.cat === c.label).length;
-              return (
-                <div key={c.label} onClick={() => setSearch(c.label)}
-                  style={{ background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: '14px 8px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.15s' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = '#eee'; e.currentTarget.style.transform = 'none'; }}>
-                  <div style={{ fontSize: 26, marginBottom: 6 }}>{c.icon}</div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: C.black, lineHeight: 1.3, marginBottom: 2 }}>{c.label}</div>
-                  <div style={{ fontSize: 10, color: '#aaa' }}>{n}</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        )}
 
         {/* ── LISTINGS ── */}
         <div id="listings-section" style={{ marginTop: 32 }}>
@@ -152,6 +166,11 @@ export default function Home({ onNav }) {
           </div>
 
           <div style={{ background: '#fff', border: `1px solid ${C.greenLight}`, borderTop: 'none', padding: '10px 14px', display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            {search && (
+              <span onClick={() => setSearch('')} style={{ fontSize: 12, color: C.green, cursor: 'pointer', fontWeight: 600 }}>
+                ✕ Clear "{search}"
+              </span>
+            )}
             <span style={{ marginLeft: 'auto', fontSize: 12, color: '#aaa' }}>
               {filtered.length} result{filtered.length !== 1 ? 's' : ''}
             </span>

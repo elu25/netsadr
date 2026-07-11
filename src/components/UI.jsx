@@ -74,7 +74,7 @@ export const Navbar = ({ onNav }) => {
   <nav style={{ background: C.black, borderBottom: `3px solid ${C.gold}`, position: 'sticky', top: 0, zIndex: 100 }}>
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', height: 56, gap: 14 }}>
       <Logo />
-      <div style={{ display: 'flex', gap: 2, marginLeft: 10 }}>
+      <div style={{ display: 'flex', gap: 2, marginLeft: 10, overflowX: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
         {['home','jobs','institutions','pricing'].map(p => (
           <button key={p} onClick={() => onNav(p)} style={{
             background: activePage === p ? 'rgba(201,168,76,0.15)' : 'transparent',
@@ -82,23 +82,25 @@ export const Navbar = ({ onNav }) => {
             color: activePage === p ? C.gold : 'rgba(255,255,255,0.55)',
             padding: '5px 11px', fontSize: 12, cursor: 'pointer',
             fontWeight: activePage === p ? 700 : 400,
-            textTransform: 'capitalize',
+            textTransform: 'capitalize', flexShrink: 0,
           }}>{p}</button>
         ))}
       </div>
-      <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
-        {SOCIALS.map(s => (
-          <a key={s.label} href={s.url} target='_blank' rel='noreferrer'
-            title={`@${s.handle}`}
-            style={{ color: 'rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center' }}>
-            <SocialIcon type={s.icon} size={14} />
-          </a>
-        ))}
-        <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
-        <button style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'rgba(255,255,255,0.7)', padding: '5px 12px', fontSize: 12, cursor: 'pointer' }}>
+      <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
+        <div className="navbar-socials" style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          {SOCIALS.map(s => (
+            <a key={s.label} href={s.url} target='_blank' rel='noreferrer'
+              title={`@${s.handle}`}
+              style={{ color: 'rgba(255,255,255,0.4)', display: 'flex', alignItems: 'center' }}>
+              <SocialIcon type={s.icon} size={14} />
+            </a>
+          ))}
+          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
+        </div>
+        <button className="navbar-login" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'rgba(255,255,255,0.7)', padding: '5px 12px', fontSize: 12, cursor: 'pointer' }}>
           Login
         </button>
-        <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 6, color: C.black, padding: '5px 12px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+        <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 6, color: C.black, padding: '5px 12px', fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
           + List Free
         </button>
       </div>
