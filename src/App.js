@@ -1,4 +1,5 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Navbar, Footer } from './components/UI';
 import Home          from './pages/Home';
 import ListingDetail from './pages/ListingDetail';
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="*"               element={<Home onNav={onNav} />} />
       </Routes>
       <Footer onNav={onNav} />
+      <Analytics />
     </div>
   );
 }
