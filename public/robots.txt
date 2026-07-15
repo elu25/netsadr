@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://netsadr.et/sitemap.xml
