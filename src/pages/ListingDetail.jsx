@@ -51,7 +51,8 @@ export default function ListingDetail({ onNav }) {
             </div>
             <div style={{ padding: '20px 24px' }}>
               <div style={{ fontSize: 11, color: C.green, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 6 }}>{listing.cat}</div>
-              <h1 style={{ fontSize: 22, fontWeight: 800, color: C.black, margin: '0 0 10px', lineHeight: 1.2 }}>{listing.name}</h1>
+              <h1 style={{ fontSize: 22, fontWeight: 800, color: C.black, margin: '0 0 4px', lineHeight: 1.2 }}>{listing.name}</h1>
+              {listing.nameAm && <div style={{ fontSize: 15, color: '#888', marginBottom: 8 }}>{listing.nameAm}</div>}
               {listing.rating > 0 && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
                   <Stars n={listing.rating} />

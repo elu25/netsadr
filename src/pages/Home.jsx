@@ -196,7 +196,8 @@ export default function Home({ onNav }) {
                 </div>
                 <div style={{ padding: '12px 14px' }}>
                   <div style={{ fontSize: 10, color: C.green, fontWeight: 700, marginBottom: 3, textTransform: 'uppercase', letterSpacing: 0.3 }}>{l.cat}</div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 5, lineHeight: 1.3 }}>{l.name}</div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 1, lineHeight: 1.3 }}>{l.name}</div>
+                  {l.nameAm && <div style={{ fontSize: 12, color: '#888', marginBottom: 4 }}>{l.nameAm}</div>}
                   {l.rating > 0 && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#888', marginBottom: 4 }}>
                       <Stars n={l.rating} />
@@ -237,9 +238,6 @@ export default function Home({ onNav }) {
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Get found by customers searching for businesses in Butajira.</p>
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
-            <button onClick={() => onNav('pricing')} style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, color: '#fff', padding: '10px 20px', fontSize: 13, cursor: 'pointer' }}>
-              See plans
-            </button>
             <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '10px 20px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
               Add free listing ↗
             </button>

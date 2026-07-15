@@ -75,7 +75,7 @@ export const Navbar = ({ onNav }) => {
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', height: 56, gap: 14 }}>
       <Logo />
       <div style={{ display: 'flex', gap: 2, marginLeft: 10, overflowX: 'auto', whiteSpace: 'nowrap', scrollbarWidth: 'none' }}>
-        {['home','jobs','institutions','pricing'].map(p => (
+        {['home','jobs','institutions'].map(p => (
           <button key={p} onClick={() => onNav(p)} style={{
             background: activePage === p ? 'rgba(201,168,76,0.15)' : 'transparent',
             border: 'none', borderRadius: 6,
@@ -138,8 +138,7 @@ export const Footer = ({ onNav }) => (
           </div>
         </div>
         {[
-          ['Platform', [['Directory','home'],['Jobs','jobs'],['Institutions','institutions'],['Marketplace (coming soon)','marketplace'],['Tenders (coming soon)','tenders'],['Pricing','pricing']]],
-          ['Company',  [['Advertise','pricing']]],
+          ['Platform', [['Directory','home'],['Jobs','jobs'],['Institutions','institutions'],['Marketplace (coming soon)','marketplace'],['Tenders (coming soon)','tenders']]],
           ['Contact',  [['+251 931 631 332',null],['elias.netsadr@gmail.com',null],['Butajira, Ethiopia',null],['netsadr.et',null],['netsadr.com',null]]],
         ].map(([title, items]) => (
           <div key={title}>

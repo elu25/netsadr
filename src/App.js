@@ -4,7 +4,6 @@ import { Navbar, Footer } from './components/UI';
 import Home          from './pages/Home';
 import ListingDetail from './pages/ListingDetail';
 import ListBusiness  from './pages/ListBusiness';
-import Pricing       from './pages/Pricing';
 import Jobs          from './pages/Jobs';
 import Institutions  from './pages/Institutions';
 import ComingSoon    from './pages/ComingSoon';
@@ -30,7 +29,6 @@ export default function App() {
         <Route path="/"               element={<Home onNav={onNav} />} />
         <Route path="/listing/:id"    element={<ListingDetail onNav={onNav} />} />
         <Route path="/list"           element={<ListBusiness onNav={onNav} />} />
-        <Route path="/pricing"        element={<Pricing onNav={onNav} />} />
         <Route path="/jobs"           element={<Jobs onNav={onNav} />} />
         <Route path="/institutions"   element={<Institutions onNav={onNav} />} />
         <Route path="/marketplace"    element={<ComingSoon title="Marketplace" onNav={onNav} />} />
