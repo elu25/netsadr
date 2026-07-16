@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { C, CATEGORIES, CITIES } from '../data/constants';
+import logoIcon from '../assets/logo-icon.png';
 
 const STEPS = ['Basic Info', 'Location & Contact', 'Details', 'Done'];
 
@@ -21,7 +22,7 @@ export default function ListBusiness({ onNav }) {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{ width: 52, height: 52, background: C.greenDark, borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px', fontSize: 26, fontWeight: 800, color: C.amber }}>N</div>
+          <img src={logoIcon} alt="Netsadr" style={{ height: 52, width: 'auto', margin: '0 auto 14px', display: 'block' }} />
           <h1 style={{ fontSize: 24, fontWeight: 800, color: C.black, margin: '0 0 6px' }}>List your business free</h1>
           <p style={{ fontSize: 14, color: '#888' }}>List your Butajira business free on Netsadr.et</p>
         </div>
@@ -73,10 +74,15 @@ export default function ListBusiness({ onNav }) {
               </div>
               <div style={{ marginBottom: 16 }}>
                 <label style={{ fontSize: 12, fontWeight: 600, color: '#555', display: 'block', marginBottom: 6 }}>Listing Plan</label>
-                <div style={{ display: 'flex', gap: 10 }}>
-                  {[['free','Free','Basic listing, no cost'],['standard','Standard','ETB 800/month'],['premium','Premium ⭐','ETB 2,500/month']].map(([val, label, sub]) => (
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+                  {[
+                    ['free','Free','Basic listing, no cost'],
+                    ['basic','Basic','ETB 299/mo · 2 photos + direction'],
+                    ['standard','Standard','ETB 499/mo · 5 photos + direction'],
+                    ['premium','Premium ⭐','ETB 999/mo · 10 photos + video + direction'],
+                  ].map(([val, label, sub]) => (
                     <div key={val} onClick={() => set('plan', val)}
-                      style={{ flex: 1, border: `2px solid ${form.plan === val ? (val === 'premium' ? C.gold : C.green) : '#eee'}`, borderRadius: 10, padding: '12px 10px', cursor: 'pointer', textAlign: 'center', background: form.plan === val ? (val === 'premium' ? '#FAEEDA' : C.greenLight) : '#fff' }}>
+                      style={{ flex: '1 1 130px', border: `2px solid ${form.plan === val ? (val === 'premium' ? C.gold : C.green) : '#eee'}`, borderRadius: 10, padding: '12px 10px', cursor: 'pointer', textAlign: 'center', background: form.plan === val ? (val === 'premium' ? '#FAEEDA' : C.greenLight) : '#fff' }}>
                       <div style={{ fontSize: 13, fontWeight: 700, color: val === 'premium' ? C.charcoal : C.black, marginBottom: 4 }}>{label}</div>
                       <div style={{ fontSize: 10, color: '#888' }}>{sub}</div>
                     </div>
