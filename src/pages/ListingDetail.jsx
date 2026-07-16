@@ -162,6 +162,12 @@ export default function ListingDetail({ onNav }) {
                   <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 6 }}>📞 Direct number</div>
                   <div style={{ fontSize: 14, color: C.gold, fontWeight: 700 }}>{listing.phone}</div>
                 </div>
+                {listing.phone2 && (
+                  <div style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginBottom: 6 }}>📞 Alternate number</div>
+                    <a href={`tel:${listing.phone2}`} style={{ fontSize: 14, color: C.gold, fontWeight: 700, textDecoration: 'none' }}>{listing.phone2}</a>
+                  </div>
+                )}
               </>
             ) : (
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>No contact number on file yet.</div>
