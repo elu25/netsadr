@@ -138,7 +138,7 @@ export const Footer = ({ onNav }) => (
           </div>
         </div>
         {[
-          ['Platform', [['Directory','home'],['Jobs','jobs'],['Institutions','institutions'],['Marketplace (coming soon)','marketplace'],['Tenders (coming soon)','tenders']]],
+          ['Platform', [['Directory','home'],['Jobs','jobs'],['Institutions','institutions'],['Marketplace (coming soon)','marketplace'],['Tenders (coming soon)','tenders'],['Privacy Policy','privacy']]],
           ['Contact',  [['+251 931 631 332',null],['elias.netsadr@gmail.com',null],['Butajira, Ethiopia',null],['netsadr.et',null],['netsadr.com',null]]],
         ].map(([title, items]) => (
           <div key={title}>
