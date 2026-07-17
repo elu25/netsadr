@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Analytics } from '@vercel/analytics/react';
 import { Navbar, Footer } from './components/UI';
@@ -13,6 +14,17 @@ import ComingSoon    from './pages/ComingSoon';
 // onNav('listing', id) -> /listing/:id
 export default function App() {
   const navigate = useNavigate();
+
+  // Only activates when this site is opened inside Telegram as a Mini App
+  // (window.Telegram.WebApp only exists there). Regular web visitors are
+  // completely unaffected — this is a safe no-op for them.
+  useEffect(() => {
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand(); // use full screen height instead of Telegram's default small sheet
+    }
+  }, []);
 
   const onNav = (page, data = null) => {
     const path = page === 'home' ? '/'

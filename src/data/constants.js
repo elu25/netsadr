@@ -161,7 +161,7 @@ export const LISTINGS = [
   { id:78, name:'Tigst Fre Kurt Bet', nameAm:'ትዕግሥት ፍሬ ቁርጥ ቤት', cat:'Food & Drink', city:'Butajira', emoji:'🍽', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Bar and restaurant.' },
   { id:79, name:'Photo Sharp', nameAm:'ፎቶ ሻርፕ', cat:'Photo & Video', city:'Butajira', emoji:'📸', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Photo studio.' },
   { id:80, name:'Photo Sami', nameAm:'ፎቶ ሳሚ', cat:'Photo & Video', city:'Butajira', emoji:'📸', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Photo studio.' },
-  { id:81, name:'Nova Pictures', nameAm:'ኖቫ ፒክቸርስ', cat:'Photo & Video', city:'Butajira', emoji:'📸', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Photo studio.' },
+  { id:81, name:'Nova Pictures', nameAm:'ኖቫ ፒክቸርስ', cat:'Photo & Video', city:'Butajira', emoji:'📸', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251964086371', desc:'Photo studio.' },
   { id:82, name:'Kidst Bete Wbet', nameAm:'ቅድስት የውበት ሳሎን', cat:'Beauty & Barber', city:'Butajira', emoji:'💇', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Beauty salon for women.' },
   { id:83, name:'Hafi Beauty Salon', nameAm:'ሀፊ የውበት ሳሎን', cat:'Beauty & Barber', city:'Butajira', emoji:'💇', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Beauty salon for women.' },
   { id:84, name:'Grace Shoes', nameAm:'ግሬስ ጫማ', cat:'Shoes & Bags', city:'Butajira', emoji:'👞', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Shoes and bags.' },
