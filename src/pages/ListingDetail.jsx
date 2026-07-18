@@ -225,3 +225,36 @@ export default function ListingDetail({ onNav }) {
               <a href={`https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
                 <button style={{ marginTop: 10, width: '100%', background: C.greenLight, border: `1px solid ${C.green}`, borderRadius: 8, padding: '9px', fontSize: 12, color: C.greenDark, cursor: 'pointer', fontWeight: 600 }}>
                   Get directions →
+                </button>
+              </a>
+            ) : (
+              <button disabled style={{ marginTop: 10, width: '100%', background: '#f4f4f4', border: '1px solid #eee', borderRadius: 8, padding: '9px', fontSize: 12, color: '#bbb', cursor: 'not-allowed', fontWeight: 600 }}>
+                Location not pinned yet
+              </button>
+            )}
+          </div>
+
+          {/* Share card */}
+          <div style={{ background: '#fff', borderRadius: 16, padding: 20, border: '1px solid #eee' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: C.black, marginBottom: 12, letterSpacing: 0.5 }}>SHARE THIS LISTING</div>
+            <div style={{ display: 'flex', gap: 8 }}>
+              {['📘 Facebook','📸 Instagram','💬 Telegram'].map(s => (
+                <button key={s} style={{ flex: 1, background: '#f7f7f6', border: '1px solid #eee', borderRadius: 8, padding: '8px 4px', fontSize: 10, cursor: 'pointer', color: '#666' }}>{s}</button>
+              ))}
+            </div>
+          </div>
+
+          {/* Claim banner */}
+          <div style={{ background: `linear-gradient(135deg, ${C.greenDark}, ${C.green})`, borderRadius: 16, padding: 18 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Is this your business?</div>
+            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>Claim this listing and manage your profile for free.</div>
+            <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '8px 16px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
+              Claim listing ↗
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+}

@@ -2,6 +2,11 @@ import { useState } from 'react';
 import { C, CATEGORIES, LISTINGS, TICKERS } from '../data/constants';
 import { Stars, Badge, Ticker } from '../components/UI';
 
+const listingPhotos = require.context('../assets/listings', false, /\.(jpe?g|png)$/);
+function resolvePhoto(filename) {
+  try { return listingPhotos(`./${filename}`); } catch { return null; }
+}
+
 export default function Home({ onNav }) {
   const [tab,    setTab]    = useState('featured');
   const [city,   setCity]   = useState('All');
@@ -190,8 +195,13 @@ export default function Home({ onNav }) {
                 style={{ background: '#fff', border: '1px solid #eee', borderRadius: 14, overflow: 'hidden', cursor: 'pointer', transition: 'all 0.15s' }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.boxShadow = '0 4px 18px rgba(29,158,117,0.12)'; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor = '#eee'; e.currentTarget.style.boxShadow = 'none'; }}>
-                <div style={{ height: 88, background: `linear-gradient(135deg, ${C.greenLight}, #f0faf5)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36, position: 'relative' }}>
-                  {l.emoji}
+                <div style={{
+                  height: 88, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 36,
+                  background: l.photos?.[0] && resolvePhoto(l.photos[0])
+                    ? `url(${resolvePhoto(l.photos[0])}) center/cover no-repeat`
+                    : `linear-gradient(135deg, ${C.greenLight}, #f0faf5)`,
+                }}>
+                  {!(l.photos?.[0] && resolvePhoto(l.photos[0])) && l.emoji}
                   <span style={{ position: 'absolute', top: 8, right: 8 }}><Badge type={l.badge} /></span>
                 </div>
                 <div style={{ padding: '12px 14px' }}>
