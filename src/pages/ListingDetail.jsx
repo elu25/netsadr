@@ -3,6 +3,14 @@ import { useParams } from 'react-router-dom';
 import { C, LISTINGS, INSTITUTIONS } from '../data/constants';
 import { Stars, Badge } from '../components/UI';
 
+// Real listing photos live in src/assets/listings/ and are referenced by
+// filename in each listing's `photos` array. This map lets us resolve a
+// filename string to the actual bundled image at build time.
+const listingPhotos = require.context('../assets/listings', false, /\.(jpe?g|png)$/);
+function resolvePhoto(filename) {
+  try { return listingPhotos(`./${filename}`); } catch { return null; }
+}
+
 export default function ListingDetail({ onNav }) {
   const { id } = useParams();
   // Look up by URL param, not passed-in state — this is what makes a
@@ -41,8 +49,13 @@ export default function ListingDetail({ onNav }) {
 
           {/* Hero card */}
           <div style={{ background: '#fff', borderRadius: 16, overflow: 'hidden', border: '1px solid #eee', marginBottom: 16 }}>
-            <div style={{ height: 180, background: `linear-gradient(135deg, ${C.greenDark}, ${C.green})`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72, position: 'relative' }}>
-              {listing.emoji}
+            <div style={{
+              height: 180, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72,
+              background: listing.photos?.[0] && resolvePhoto(listing.photos[0])
+                ? `url(${resolvePhoto(listing.photos[0])}) center/cover no-repeat`
+                : `linear-gradient(135deg, ${C.greenDark}, ${C.green})`,
+            }}>
+              {!(listing.photos?.[0] && resolvePhoto(listing.photos[0])) && listing.emoji}
               <div style={{ position: 'absolute', top: 14, right: 14 }}><Badge type={listing.badge} /></div>
               <button onClick={() => setSaved(!saved)}
                 style={{ position: 'absolute', top: 14, left: 14, background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 8, color: '#fff', padding: '6px 12px', fontSize: 13, cursor: 'pointer' }}>
@@ -117,13 +130,25 @@ export default function ListingDetail({ onNav }) {
               {tab === 'photos' && (
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 16 }}>Photos</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
-                    {[...Array(6)].map((_, i) => (
-                      <div key={i} style={{ aspectRatio: '1', background: `linear-gradient(${135 + i * 20}deg, ${C.greenLight}, ${C.greenDark}20)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>
-                        {listing.emoji}
-                      </div>
-                    ))}
-                  </div>
+                  {listing.photos && listing.photos.length > 0 ? (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10 }}>
+                      {listing.photos.map((filename, i) => {
+                        const src = resolvePhoto(filename);
+                        return src ? (
+                          <img key={i} src={src} alt={`${listing.name} ${i + 1}`}
+                            style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 10 }} />
+                        ) : null;
+                      })}
+                    </div>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+                      {[...Array(6)].map((_, i) => (
+                        <div key={i} style={{ aspectRatio: '1', background: `linear-gradient(${135 + i * 20}deg, ${C.greenLight}, ${C.greenDark}20)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>
+                          {listing.emoji}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
 
@@ -168,6 +193,13 @@ export default function ListingDetail({ onNav }) {
                     <a href={`tel:${listing.phone2}`} style={{ fontSize: 14, color: C.gold, fontWeight: 700, textDecoration: 'none' }}>{listing.phone2}</a>
                   </div>
                 )}
+                {listing.instagram && (
+                  <a href={listing.instagram} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                    <button style={{ width: '100%', marginTop: 10, background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 10, padding: '10px', fontSize: 13, color: 'rgba(255,255,255,0.8)', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
+                      📸 Follow on Instagram
+                    </button>
+                  </a>
+                )}
               </>
             ) : (
               <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>No contact number on file yet.</div>
@@ -177,36 +209,19 @@ export default function ListingDetail({ onNav }) {
           {/* Location card */}
           <div style={{ background: '#fff', borderRadius: 16, padding: 20, border: '1px solid #eee' }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.black, marginBottom: 12, letterSpacing: 0.5 }}>📍 LOCATION</div>
-            <div style={{ height: 120, background: `linear-gradient(135deg, ${C.greenLight}, #d4f0e4)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12, fontSize: 32 }}>
-              🗺
-            </div>
+            {listing.lat && listing.lng ? (
+              <a href={`https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                <div style={{ height: 120, background: `linear-gradient(135deg, ${C.greenLight}, #d4f0e4)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12, fontSize: 32, cursor: 'pointer' }}>
+                  🗺
+                </div>
+              </a>
+            ) : (
+              <div style={{ height: 120, background: `linear-gradient(135deg, ${C.greenLight}, #d4f0e4)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12, fontSize: 32 }}>
+                🗺
+              </div>
+            )}
             <div style={{ fontSize: 13, color: '#555' }}>{listing.city}, Ethiopia</div>
-            <button style={{ marginTop: 10, width: '100%', background: C.greenLight, border: `1px solid ${C.green}`, borderRadius: 8, padding: '9px', fontSize: 12, color: C.greenDark, cursor: 'pointer', fontWeight: 600 }}>
-              Get directions →
-            </button>
-          </div>
-
-          {/* Share card */}
-          <div style={{ background: '#fff', borderRadius: 16, padding: 20, border: '1px solid #eee' }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: C.black, marginBottom: 12, letterSpacing: 0.5 }}>SHARE THIS LISTING</div>
-            <div style={{ display: 'flex', gap: 8 }}>
-              {['📘 Facebook','📸 Instagram','💬 Telegram'].map(s => (
-                <button key={s} style={{ flex: 1, background: '#f7f7f6', border: '1px solid #eee', borderRadius: 8, padding: '8px 4px', fontSize: 10, cursor: 'pointer', color: '#666' }}>{s}</button>
-              ))}
-            </div>
-          </div>
-
-          {/* Claim banner */}
-          <div style={{ background: `linear-gradient(135deg, ${C.greenDark}, ${C.green})`, borderRadius: 16, padding: 18 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 4 }}>Is this your business?</div>
-            <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.7)', marginBottom: 12 }}>Claim this listing and manage your profile for free.</div>
-            <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '8px 16px', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-              Claim listing ↗
-            </button>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  );
-}
+            {listing.lat && listing.lng ? (
+              <a href={`https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+                <button style={{ marginTop: 10, width: '100%', background: C.greenLight, border: `1px solid ${C.green}`, borderRadius: 8, padding: '9px', fontSize: 12, color: C.greenDark, cursor: 'pointer', fontWeight: 600 }}>
+                  Get directions →
