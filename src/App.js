@@ -8,6 +8,7 @@ import ListBusiness  from './pages/ListBusiness';
 import Jobs          from './pages/Jobs';
 import Institutions  from './pages/Institutions';
 import Privacy       from './pages/Privacy';
+import Connect       from './pages/Connect';
 import ComingSoon    from './pages/ComingSoon';
 
 // onNav(page) navigates to a real URL, so every page (including a
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/jobs"           element={<Jobs onNav={onNav} />} />
         <Route path="/institutions"   element={<Institutions onNav={onNav} />} />
         <Route path="/privacy"        element={<Privacy onNav={onNav} />} />
+        <Route path="/connect"        element={<Connect />} />
         <Route path="/marketplace"    element={<ComingSoon title="Marketplace" onNav={onNav} />} />
         <Route path="/tenders"        element={<ComingSoon title="Tenders" onNav={onNav} />} />
         <Route path="*"               element={<Home onNav={onNav} />} />
