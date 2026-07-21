@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { C, LISTINGS, INSTITUTIONS } from '../data/constants';
-import { Stars, Badge } from '../components/UI';
+import { Stars, Badge, PhotoLightbox } from '../components/UI';
 
 // Real listing photos live in src/assets/listings/ and are referenced by
 // filename in each listing's `photos` array. This map lets us resolve a
@@ -19,6 +19,8 @@ export default function ListingDetail({ onNav }) {
   const listing = [...LISTINGS, ...INSTITUTIONS].find(l => String(l.id) === id);
   const [saved, setSaved] = useState(false);
   const [tab,   setTab]   = useState('overview');
+  const [lightboxIndex, setLightboxIndex] = useState(null); // null = closed
+  const resolvedPhotos = (listing?.photos || []).map(resolvePhoto).filter(Boolean);
 
   if (!listing) return (
     <div style={{ textAlign: 'center', padding: 60 }}>
@@ -49,8 +51,11 @@ export default function ListingDetail({ onNav }) {
 
           {/* Hero card */}
           <div style={{ background: '#fff', borderRadius: 16, overflow: 'hidden', border: '1px solid #eee', marginBottom: 16 }}>
-            <div style={{
+            <div
+              onClick={() => resolvedPhotos.length > 0 && setLightboxIndex(0)}
+              style={{
               height: 180, position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 72,
+              cursor: resolvedPhotos.length > 0 ? 'pointer' : 'default',
               background: listing.photos?.[0] && resolvePhoto(listing.photos[0])
                 ? `url(${resolvePhoto(listing.photos[0])}) center/cover no-repeat`
                 : `linear-gradient(135deg, ${C.greenDark}, ${C.green})`,
@@ -136,7 +141,8 @@ export default function ListingDetail({ onNav }) {
                         const src = resolvePhoto(filename);
                         return src ? (
                           <img key={i} src={src} alt={`${listing.name} ${i + 1}`}
-                            style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 10 }} />
+                            onClick={() => setLightboxIndex(i)}
+                            style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 10, cursor: 'pointer' }} />
                         ) : null;
                       })}
                     </div>
@@ -255,6 +261,14 @@ export default function ListingDetail({ onNav }) {
 
         </div>
       </div>
+
+      {lightboxIndex !== null && (
+        <PhotoLightbox
+          srcs={resolvedPhotos}
+          startIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+        />
+      )}
     </div>
   );
 }

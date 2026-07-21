@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { C, SOCIALS } from '../data/constants';
 import logoIcon from '../assets/logo-icon.png';
@@ -162,3 +163,99 @@ export const Footer = ({ onNav }) => (
     </div>
   </footer>
 );
+
+// ── PhotoLightbox ─────────────────────────────────────────────
+// Reusable full-screen photo viewer. Pass any listing's resolved photo
+// URLs — works automatically for every current and future listing photo,
+// no per-listing wiring needed. Tap image/arrows to navigate, tap
+// background or the × to close, swipe left/right on touch, arrow keys
+// and Escape on desktop.
+export const PhotoLightbox = ({ srcs, startIndex = 0, onClose }) => {
+  const [index, setIndex] = useState(startIndex);
+  const touchStartX = useRef(null);
+
+  const next = () => setIndex(i => (i + 1) % srcs.length);
+  const prev = () => setIndex(i => (i - 1 + srcs.length) % srcs.length);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') next();
+      if (e.key === 'ArrowLeft') prev();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [srcs.length]);
+
+  if (!srcs || srcs.length === 0) return null;
+
+  return (
+    <div
+      onClick={onClose}
+      onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current == null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(dx) > 40) (dx < 0 ? next() : prev());
+        touchStartX.current = null;
+      }}
+      style={{
+        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.92)', zIndex: 1000,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <button
+        onClick={onClose}
+        aria-label="Close"
+        style={{
+          position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: 20,
+          background: 'rgba(255,255,255,0.12)', border: 'none', color: '#fff', fontSize: 20,
+          cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}
+      >
+        ✕
+      </button>
+
+      {srcs.length > 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); prev(); }}
+          aria-label="Previous photo"
+          style={{
+            position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)',
+            width: 44, height: 44, borderRadius: 22, background: 'rgba(255,255,255,0.12)',
+            border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer',
+          }}
+        >
+          ‹
+        </button>
+      )}
+
+      <img
+        src={srcs[index]}
+        alt={`Photo ${index + 1} of ${srcs.length}`}
+        onClick={(e) => e.stopPropagation()}
+        style={{ maxWidth: '92vw', maxHeight: '85vh', objectFit: 'contain', borderRadius: 6 }}
+      />
+
+      {srcs.length > 1 && (
+        <button
+          onClick={(e) => { e.stopPropagation(); next(); }}
+          aria-label="Next photo"
+          style={{
+            position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)',
+            width: 44, height: 44, borderRadius: 22, background: 'rgba(255,255,255,0.12)',
+            border: 'none', color: '#fff', fontSize: 22, cursor: 'pointer',
+          }}
+        >
+          ›
+        </button>
+      )}
+
+      {srcs.length > 1 && (
+        <div style={{ position: 'absolute', bottom: 20, color: 'rgba(255,255,255,0.7)', fontSize: 13 }}>
+          {index + 1} / {srcs.length}
+        </div>
+      )}
+    </div>
+  );
+};
