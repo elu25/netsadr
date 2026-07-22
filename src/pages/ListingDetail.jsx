@@ -213,10 +213,21 @@ export default function ListingDetail({ onNav }) {
           </div>
 
           {/* Location card */}
+          {(() => {
+            // If we've confirmed this business has a Google Place ID (looked up
+            // manually when GPS was added), link by name/place so Maps shows
+            // its real listing — reviews, hours, photos. Otherwise fall back
+            // to a bare coordinate pin.
+            const directionsUrl = listing.lat && listing.lng
+              ? (listing.placeId
+                  ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(listing.name)}&query_place_id=${listing.placeId}`
+                  : `https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`)
+              : null;
+            return (
           <div style={{ background: '#fff', borderRadius: 16, padding: 20, border: '1px solid #eee' }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: C.black, marginBottom: 12, letterSpacing: 0.5 }}>📍 LOCATION</div>
-            {listing.lat && listing.lng ? (
-              <a href={`https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+            {directionsUrl ? (
+              <a href={directionsUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
                 <div style={{ height: 120, background: `linear-gradient(135deg, ${C.greenLight}, #d4f0e4)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 12, fontSize: 32, cursor: 'pointer' }}>
                   🗺
                 </div>
@@ -227,8 +238,8 @@ export default function ListingDetail({ onNav }) {
               </div>
             )}
             <div style={{ fontSize: 13, color: '#555' }}>{listing.city}, Ethiopia</div>
-            {listing.lat && listing.lng ? (
-              <a href={`https://www.google.com/maps/search/?api=1&query=${listing.lat},${listing.lng}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+            {directionsUrl ? (
+              <a href={directionsUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
                 <button style={{ marginTop: 10, width: '100%', background: C.greenLight, border: `1px solid ${C.green}`, borderRadius: 8, padding: '9px', fontSize: 12, color: C.greenDark, cursor: 'pointer', fontWeight: 600 }}>
                   Get directions →
                 </button>
@@ -239,6 +250,8 @@ export default function ListingDetail({ onNav }) {
               </button>
             )}
           </div>
+            );
+          })()}
 
           {/* Share card */}
           <div style={{ background: '#fff', borderRadius: 16, padding: 20, border: '1px solid #eee' }}>
