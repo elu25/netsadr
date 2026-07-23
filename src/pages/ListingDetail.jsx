@@ -20,7 +20,9 @@ export default function ListingDetail({ onNav }) {
   const [saved, setSaved] = useState(false);
   const [tab,   setTab]   = useState('overview');
   const [lightboxIndex, setLightboxIndex] = useState(null); // null = closed
+  const [menuLightboxIndex, setMenuLightboxIndex] = useState(null); // null = closed
   const resolvedPhotos = (listing?.photos || []).map(resolvePhoto).filter(Boolean);
+  const resolvedMenuPhotos = (listing?.menu || []).map(item => resolvePhoto(item.photo)).filter(Boolean);
 
   if (!listing) return (
     <div style={{ textAlign: 'center', padding: 60 }}>
@@ -88,7 +90,7 @@ export default function ListingDetail({ onNav }) {
           {/* Tabs */}
           <div style={{ background: '#fff', borderRadius: 16, border: '1px solid #eee', overflow: 'hidden', marginBottom: 16 }}>
             <div style={{ display: 'flex', borderBottom: '1px solid #eee' }}>
-              {['overview','reviews','photos','hours'].map(t => (
+              {['overview','reviews','photos', ...((listing.menu?.length || listing.menuCategories?.length) ? ['menu'] : []), 'hours'].map(t => (
                 <button key={t} onClick={() => setTab(t)} style={{
                   flex: 1, padding: '13px 8px',
                   background: tab === t ? C.greenLight : 'transparent',
@@ -152,6 +154,65 @@ export default function ListingDetail({ onNav }) {
                         <div key={i} style={{ aspectRatio: '1', background: `linear-gradient(${135 + i * 20}deg, ${C.greenLight}, ${C.greenDark}20)`, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28 }}>
                           {listing.emoji}
                         </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {tab === 'menu' && (
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 16 }}>Menu</div>
+
+                  {listing.menu?.length > 0 && (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 14, marginBottom: listing.menuCategories?.length ? 24 : 0 }}>
+                      {listing.menu.map((item, i) => {
+                        const src = resolvePhoto(item.photo);
+                        return (
+                          <div key={i}>
+                            {src ? (
+                              <img src={src} alt={item.name}
+                                onClick={() => setMenuLightboxIndex(i)}
+                                style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 10, cursor: 'pointer' }} />
+                            ) : (
+                              <div style={{ width: '100%', aspectRatio: '4/3', background: C.greenLight, borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24 }}>
+                                {listing.emoji}
+                              </div>
+                            )}
+                            <div style={{ fontSize: 12, color: '#555', marginTop: 6, textAlign: 'center' }}>{item.name}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {listing.menuCategories?.length > 0 && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                      {listing.menuCategories.map((cat, ci) => (
+                        <details key={ci} open={ci === 0} style={{ border: '1px solid #eee', borderRadius: 10, overflow: 'hidden' }}>
+                          <summary style={{
+                            padding: '12px 14px', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+                            color: C.greenDark, background: C.greenLight, listStyle: 'none',
+                          }}>
+                            {cat.category}{cat.categoryAm ? ` · ${cat.categoryAm}` : ''}
+                          </summary>
+                          <div style={{ padding: '8px 14px 14px' }}>
+                            {cat.items.map((item, ii) => (
+                              <div key={ii} style={{
+                                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+                                padding: '8px 0', borderBottom: ii < cat.items.length - 1 ? '1px solid #f2f2f2' : 'none', gap: 12,
+                              }}>
+                                <div style={{ minWidth: 0 }}>
+                                  <div style={{ fontSize: 13, color: C.black, fontWeight: 600 }}>
+                                    {item.name}{item.nameAm ? <span style={{ color: '#999', fontWeight: 400 }}> · {item.nameAm}</span> : null}
+                                  </div>
+                                  {item.desc && <div style={{ fontSize: 11.5, color: '#888', marginTop: 2 }}>{item.desc}</div>}
+                                </div>
+                                <div style={{ fontSize: 13, fontWeight: 700, color: C.green, whiteSpace: 'nowrap' }}>{item.price} ETB</div>
+                              </div>
+                            ))}
+                          </div>
+                        </details>
                       ))}
                     </div>
                   )}
@@ -280,6 +341,14 @@ export default function ListingDetail({ onNav }) {
           srcs={resolvedPhotos}
           startIndex={lightboxIndex}
           onClose={() => setLightboxIndex(null)}
+        />
+      )}
+
+      {menuLightboxIndex !== null && (
+        <PhotoLightbox
+          srcs={resolvedMenuPhotos}
+          startIndex={menuLightboxIndex}
+          onClose={() => setMenuLightboxIndex(null)}
         />
       )}
     </div>
