@@ -3,6 +3,27 @@ import { useParams } from 'react-router-dom';
 import { C, LISTINGS, INSTITUTIONS } from '../data/constants';
 import { Stars, Badge, PhotoLightbox } from '../components/UI';
 
+// Menu prices are hidden site-wide for now (per request) — flip this to
+// true to show them again everywhere without touching the render code.
+const SHOW_MENU_PRICES = false;
+
+// Icons shown next to each menu category header. Falls back to a plain
+// plate emoji for any category name not listed here (e.g. future menus
+// for other listings with different section names).
+const CATEGORY_ICONS = {
+  'Lunch / Main Dishes': '🍛',
+  'Salads': '🥗',
+  'Extras / Add-ons': '➕',
+  'Burgers': '🍔',
+  'Large Pizza': '🍕',
+  'Mini Pizza': '🍕',
+  'Soft Drinks & Water': '🥤',
+  'Breakfast': '🍳',
+  'Sandwiches': '🥪',
+  'Fresh Juices & Drinks': '🧃',
+  'Hot Drinks': '☕',
+};
+
 // Real listing photos live in src/assets/listings/ and are referenced by
 // filename in each listing's `photos` array. This map lets us resolve a
 // filename string to the actual bundled image at build time.
@@ -21,6 +42,7 @@ export default function ListingDetail({ onNav }) {
   const [tab,   setTab]   = useState('overview');
   const [lightboxIndex, setLightboxIndex] = useState(null); // null = closed
   const [menuLightboxIndex, setMenuLightboxIndex] = useState(null); // null = closed
+  const [openMenuCats, setOpenMenuCats] = useState([0]); // which category accordions are expanded
   const resolvedPhotos = (listing?.photos || []).map(resolvePhoto).filter(Boolean);
   const resolvedMenuPhotos = (listing?.menu || []).map(item => resolvePhoto(item.photo)).filter(Boolean);
 
@@ -187,33 +209,91 @@ export default function ListingDetail({ onNav }) {
                   )}
 
                   {listing.menuCategories?.length > 0 && (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-                      {listing.menuCategories.map((cat, ci) => (
-                        <details key={ci} open={ci === 0} style={{ border: '1px solid #eee', borderRadius: 10, overflow: 'hidden' }}>
-                          <summary style={{
-                            padding: '12px 14px', cursor: 'pointer', fontWeight: 700, fontSize: 13,
-                            color: C.greenDark, background: C.greenLight, listStyle: 'none',
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      {listing.menuCategories.map((cat, ci) => {
+                        const isOpen = openMenuCats.includes(ci);
+                        const icon = CATEGORY_ICONS[cat.category] || '🍽';
+                        return (
+                          <div key={ci} style={{
+                            borderRadius: 14, overflow: 'hidden', border: '1px solid #eee',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                           }}>
-                            {cat.category}{cat.categoryAm ? ` · ${cat.categoryAm}` : ''}
-                          </summary>
-                          <div style={{ padding: '8px 14px 14px' }}>
-                            {cat.items.map((item, ii) => (
-                              <div key={ii} style={{
-                                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                                padding: '8px 0', borderBottom: ii < cat.items.length - 1 ? '1px solid #f2f2f2' : 'none', gap: 12,
+                            <button
+                              onClick={() => setOpenMenuCats(prev =>
+                                prev.includes(ci) ? prev.filter(x => x !== ci) : [...prev, ci]
+                              )}
+                              style={{
+                                width: '100%', display: 'flex', alignItems: 'center', gap: 12,
+                                padding: '14px 16px', cursor: 'pointer', border: 'none', textAlign: 'left',
+                                background: isOpen ? `linear-gradient(135deg, ${C.greenDark}, ${C.green})` : '#fff',
+                              }}
+                            >
+                              <div style={{
+                                width: 34, height: 34, borderRadius: 10, flexShrink: 0,
+                                background: isOpen ? 'rgba(255,255,255,0.18)' : C.greenLight,
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 17,
                               }}>
-                                <div style={{ minWidth: 0 }}>
-                                  <div style={{ fontSize: 13, color: C.black, fontWeight: 600 }}>
-                                    {item.name}{item.nameAm ? <span style={{ color: '#999', fontWeight: 400 }}> · {item.nameAm}</span> : null}
-                                  </div>
-                                  {item.desc && <div style={{ fontSize: 11.5, color: '#888', marginTop: 2 }}>{item.desc}</div>}
-                                </div>
-                                <div style={{ fontSize: 13, fontWeight: 700, color: C.green, whiteSpace: 'nowrap' }}>{item.price} ETB</div>
+                                {icon}
                               </div>
-                            ))}
+                              <div style={{ flex: 1 }}>
+                                <div style={{ fontSize: 14, fontWeight: 800, color: isOpen ? '#fff' : C.black }}>
+                                  {cat.category}
+                                </div>
+                                {cat.categoryAm && (
+                                  <div style={{ fontSize: 11.5, color: isOpen ? 'rgba(255,255,255,0.75)' : '#999', marginTop: 1 }}>
+                                    {cat.categoryAm} · {cat.items.length} items
+                                  </div>
+                                )}
+                              </div>
+                              <div style={{
+                                fontSize: 14, color: isOpen ? '#fff' : '#bbb',
+                                transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s',
+                              }}>
+                                ⌄
+                              </div>
+                            </button>
+
+                            {isOpen && (
+                              <div style={{ background: '#fcfcfb' }}>
+                                {cat.items.map((item, ii) => {
+                                  const isSpecial = /special/i.test(item.name);
+                                  return (
+                                    <div key={ii} style={{
+                                      display: 'flex', alignItems: 'baseline', gap: 10,
+                                      padding: '11px 16px',
+                                      borderTop: ii > 0 ? '1px solid #efefec' : 'none',
+                                    }}>
+                                      <div style={{
+                                        width: 5, height: 5, borderRadius: 3, flexShrink: 0, marginTop: 6,
+                                        background: isSpecial ? C.amber : C.green,
+                                      }} />
+                                      <div style={{ minWidth: 0, flex: 1 }}>
+                                        <div style={{ fontSize: 13.5, color: C.black, fontWeight: isSpecial ? 700 : 600 }}>
+                                          {item.name}
+                                          {item.nameAm && <span style={{ color: '#999', fontWeight: 400 }}> · {item.nameAm}</span>}
+                                          {isSpecial && (
+                                            <span style={{
+                                              marginLeft: 8, fontSize: 9.5, fontWeight: 800, color: C.amber,
+                                              border: `1px solid ${C.amber}`, borderRadius: 4, padding: '1px 5px',
+                                              letterSpacing: 0.4, verticalAlign: 'middle',
+                                            }}>
+                                              HOUSE PICK
+                                            </span>
+                                          )}
+                                        </div>
+                                        {item.desc && <div style={{ fontSize: 11.5, color: '#888', marginTop: 2, fontStyle: 'italic' }}>{item.desc}</div>}
+                                      </div>
+                                      {SHOW_MENU_PRICES && (
+                                        <div style={{ fontSize: 13, fontWeight: 700, color: C.green, whiteSpace: 'nowrap' }}>{item.price} ETB</div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
                           </div>
-                        </details>
-                      ))}
+                        );
+                      })}
                     </div>
                   )}
                 </div>
