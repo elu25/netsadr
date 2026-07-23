@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { C, LISTINGS, INSTITUTIONS } from '../data/constants';
 import { Stars, Badge, PhotoLightbox } from '../components/UI';
 
@@ -34,12 +34,20 @@ function resolvePhoto(filename) {
 
 export default function ListingDetail({ onNav }) {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  // Lets a QR code or shared link jump straight to a specific tab, e.g.
+  // /listing/15?tab=menu opens directly on the Menu tab instead of Overview.
+  const requestedTab = searchParams.get('tab');
   // Look up by URL param, not passed-in state — this is what makes a
   // shared link actually work when someone opens it fresh (e.g. from
   // Facebook/Telegram) instead of only working via in-app navigation.
   const listing = [...LISTINGS, ...INSTITUTIONS].find(l => String(l.id) === id);
   const [saved, setSaved] = useState(false);
-  const [tab,   setTab]   = useState('overview');
+  const [tab,   setTab]   = useState(() => {
+    const validTabs = ['overview', 'reviews', 'photos', 'hours'];
+    if ((listing?.menu?.length || listing?.menuCategories?.length)) validTabs.push('menu');
+    return validTabs.includes(requestedTab) ? requestedTab : 'overview';
+  });
   const [lightboxIndex, setLightboxIndex] = useState(null); // null = closed
   const [menuLightboxIndex, setMenuLightboxIndex] = useState(null); // null = closed
   const [openMenuCats, setOpenMenuCats] = useState([0]); // which category accordions are expanded
