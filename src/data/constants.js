@@ -1,4 +1,5 @@
 import { DANAYIT_CAFE_MENU } from './danayit-cafe-menu';
+import { BATCH_2_LISTINGS } from './batch2-listings';
 
 // ── Brand Colors ─────────────────────────────────────────────
 export const C = {
@@ -97,7 +98,7 @@ export const LISTINGS = [
   { id:12, name:'Kaf Fikadu Asore Hotel', nameAm:'ካፍ ፍቃዱ አሶሬ ሆቴል',            cat:'Hotels', city:'Butajira', emoji:'🏩', rating:3, reviews:9,  badge:'new',      tabs:['new'],                   phone:'+251461150443', desc:'Budget friendly hotel on Addis–Arba Minch road, Butajira.' },
   { id:13, name:'Yadi Film Production', nameAm:'ያዲ ፊልም ፕሮዳክሽን', cat:'Photo & Video', city:'Butajira', emoji:'📸', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251912112633', phone2:'+251949641070', desc:'Photography and film production — photos and video for weddings, birthdays, and other ceremonies. Near Zebidar Building.', photos:['yadi-1.jpg','yadi-2.jpg'], lat:8.120439, lng:38.378275, placeId:'ChIJQZZWDgBBsxcRne7xAu_ornA' },
   { id:14, name:'Time Café', nameAm:'ታይም ካፌ', cat:'Food & Drink', city:'Butajira', emoji:'☕', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251977212891', desc:'Café service. Near Guzolma Building.' },
-  { id:15, name:'Danayit Café', nameAm:'ዳናይት ካፌ', cat:'Food & Drink', city:'Butajira', emoji:'☕', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251977733741', phone2:'+251954043732', desc:'Café service.  Guzolma Building.', photos:['danayit-cafe-1.jpg','danayit-cafe-2.jpg','danayit-cafe-3.jpg'], menuCategories: DANAYIT_CAFE_MENU, lat:8.1198442, lng:38.3786858 },
+  { id:15, name:'Danayit Café', nameAm:'ዳናይት ካፌ', cat:'Food & Drink', city:'Butajira', emoji:'☕', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251977733741', phone2:'+251954043732', desc:'Café service. Near Guzolma Building.', photos:['danayit-cafe-1.jpg','danayit-cafe-2.jpg','danayit-cafe-3.jpg'], menuCategories: DANAYIT_CAFE_MENU, lat:8.1198442, lng:38.3786858 },
   { id:16, name:'Beya Motor Byscle', nameAm:'በያ የሞተር ሳይክል ስፔርፓርት', cat:'Automotive & Parts', city:'Butajira', emoji:'🏍', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251925585155', desc:'Motorcycle spare parts. Near Mars tower.' },
   { id:17, name:'Amu Home Collection', nameAm:'አሙ ሆም ኮሌክሽን', cat:'Home & Gifts', city:'Butajira', emoji:'🎁', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251912434268', desc:'Home goods and household items. Near Mars tower.' },
   { id:18, name:'Landa Brand', nameAm:'ላንዳ ብራንድ', cat:'Fashion & Clothing', city:'Butajira', emoji:'👕', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251964255730', desc:'Trousers, t-shirts, and other clothing. Near Mars tower.' },
@@ -202,6 +203,7 @@ export const LISTINGS = [
   { id:117, name:'Amin Electronics Trading', nameAm:'አሚን ኤሌክትሮኒክስ ንግድ', cat:'Tech & IT', city:'Butajira', emoji:'💻', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251911837070', desc:'Electronics and computer trading.' },
   { id:118, name:'Meki Electronics', nameAm:'መኪ ኤሌክትሮኒክስ', cat:'Tech & IT', city:'Butajira', emoji:'💻', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Electronics and computer sales.' },
   { id:119, name:'Tare Smart Phone', nameAm:'ታሬ ስማርት ፎን', cat:'Tech & IT', city:'Butajira', emoji:'📱', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251927016629', desc:'Mobile phone shop.' },
+  ...BATCH_2_LISTINGS,
 ];
 
 // ── Pricing Plans ─────────────────────────────────────────────

@@ -10,6 +10,7 @@ import Institutions  from './pages/Institutions';
 import Privacy       from './pages/Privacy';
 import Connect       from './pages/Connect';
 import ComingSoon    from './pages/ComingSoon';
+import { LanguageProvider } from './i18n/LanguageContext';
 
 // onNav(page) navigates to a real URL, so every page (including a
 // single business listing) has its own shareable, bookmarkable link.
@@ -37,6 +38,7 @@ export default function App() {
   };
 
   return (
+    <LanguageProvider>
     <div>
       <Navbar onNav={onNav} />
       <Routes>
@@ -54,5 +56,6 @@ export default function App() {
       <Footer onNav={onNav} />
       <Analytics />
     </div>
+    </LanguageProvider>
   );
 }

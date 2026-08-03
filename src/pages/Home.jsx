@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { C, CATEGORIES, LISTINGS, TICKERS } from '../data/constants';
 import { Stars, Badge, Ticker } from '../components/UI';
+import { useLanguage } from '../i18n/LanguageContext';
+import { categoryLabel, TICKERS_AM } from '../i18n/translations';
 
 const listingPhotos = require.context('../assets/listings', false, /\.(jpe?g|png)$/);
 function resolvePhoto(filename) {
@@ -8,6 +10,7 @@ function resolvePhoto(filename) {
 }
 
 export default function Home({ onNav }) {
+  const { t, lang } = useLanguage();
   const [tab,    setTab]    = useState('featured');
   const [city,   setCity]   = useState('All');
   const [search, setSearch] = useState('');
@@ -44,7 +47,7 @@ export default function Home({ onNav }) {
 
   return (
     <div>
-      <Ticker text={TICKERS[ticker]} />
+      <Ticker text={lang === 'am' ? TICKERS_AM[ticker] : TICKERS[ticker]} />
 
       {/* ── HERO ── */}
       <div style={{ background: `linear-gradient(135deg, ${C.black} 0%, ${C.greenDark} 55%, ${C.green} 100%)`, padding: '48px 20px 40px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
@@ -52,34 +55,34 @@ export default function Home({ onNav }) {
         <div style={{ position: 'absolute', bottom: -60, left: -40, width: 240, height: 240, borderRadius: '50%', background: C.green, opacity: 0.1, pointerEvents: 'none' }} />
         <div style={{ position: 'relative' }}>
           <div style={{ display: 'inline-block', background: 'rgba(201,168,76,0.15)', border: '1px solid rgba(201,168,76,0.3)', borderRadius: 20, padding: '4px 16px', marginBottom: 16 }}>
-            <span style={{ color: C.gold, fontSize: 13, fontWeight: 600 }}>🇪🇹 Butajira's Free Business Directory</span>
+            <span style={{ color: C.gold, fontSize: 13, fontWeight: 600 }}>{t('heroKicker')}</span>
           </div>
           <h1 style={{ color: '#fff', fontSize: 36, fontWeight: 800, margin: '0 0 12px', letterSpacing: -1, lineHeight: 1.15 }}>
-            Find Any Butajira <span style={{ color: C.gold }}>Business</span>, Instantly
+            {t('heroTitlePrefix')}<span style={{ color: C.gold }}>{t('heroTitleHighlight')}</span>{t('heroTitleSuffix')}
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 15, marginBottom: 26 }}>
-            ነፃ ድር — Directory · Jobs · Institutions
+            {t('heroTagline')}
           </p>
 
           {/* Search */}
           <div style={{ maxWidth: 480, margin: '0 auto 20px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
             <select
               value={search}
-              onChange={e => setSearch(e.target.value === 'All categories' ? '' : e.target.value)}
+              onChange={e => setSearch(e.target.value === t('allCategories') ? '' : e.target.value)}
               style={{ width: '100%', maxWidth: 220, background: '#fff', border: 'none', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#444', cursor: 'pointer', boxShadow: '0 4px 14px rgba(0,0,0,0.15)' }}>
-              <option value="">All categories</option>
-              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.label}</option>)}
+              <option value="">{t('allCategories')}</option>
+              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{categoryLabel(c.label, lang)}</option>)}
             </select>
             <div style={{ display: 'flex', flexWrap: 'wrap', width: '100%', borderRadius: 12, overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.25)' }}>
               <input
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                placeholder="Search businesses, products, services…"
+                placeholder={t('searchPlaceholder')}
                 style={{ flex: '4 1 180px', minWidth: 0, border: 'none', padding: '14px 16px', fontSize: 14, color: '#333', outline: 'none' }}
               />
               <button onClick={() => document.getElementById('listings-section')?.scrollIntoView({ behavior: 'smooth' })}
                 style={{ flex: '0 0 auto', background: C.gold, border: 'none', padding: '14px 22px', fontSize: 13, fontWeight: 700, color: C.black, cursor: 'pointer' }}>
-                Search
+                {t('searchButton')}
               </button>
             </div>
           </div>
@@ -94,14 +97,14 @@ export default function Home({ onNav }) {
               .map(c => (
                 <span key={c.label} onClick={() => filterAndScroll(c.label)}
                   style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: 20, padding: '4px 14px', color: '#fff', fontSize: 12, cursor: 'pointer' }}>
-                  {c.icon} {c.label}
+                  {c.icon} {categoryLabel(c.label, lang)}
                 </span>
               ))}
           </div>
 
           {/* Stats — real numbers only. Never hardcode these. */}
           <div style={{ display: 'flex', gap: 36, justifyContent: 'center', flexWrap: 'wrap' }}>
-            {[[String(LISTINGS.length), 'Businesses listed'], [String(cities.length - 1), 'Cities'], ['Free', 'To list your business']].map(([n, l]) => (
+            {[[String(LISTINGS.length), t('statsBusinesses')], [String(cities.length - 1), t('statsCities')], [t('statsFreeLabel'), t('statsFree')]].map(([n, l]) => (
               <div key={l} style={{ textAlign: 'center' }}>
                 <div style={{ color: C.gold, fontSize: 26, fontWeight: 800, lineHeight: 1 }}>{n}</div>
                 <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: 11, marginTop: 4 }}>{l}</div>
@@ -114,7 +117,7 @@ export default function Home({ onNav }) {
       {/* ── CITY STRIP — only shows cities you actually have listings in ── */}
       <div style={{ background: '#fff', borderBottom: '1px solid #eee', padding: '12px 20px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <div style={{ fontSize: 10, color: '#bbb', marginBottom: 8, fontWeight: 700, letterSpacing: 0.6 }}>📍 BROWSE BY CITY</div>
+          <div style={{ fontSize: 10, color: '#bbb', marginBottom: 8, fontWeight: 700, letterSpacing: 0.6 }}>{t('browseByCity')}</div>
           <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap' }}>
             {cities.map(c => (
               <span key={c} onClick={() => setCity(c)} style={{
@@ -123,7 +126,7 @@ export default function Home({ onNav }) {
                 border: `1px solid ${city === c ? C.green : '#e8e8e8'}`,
                 borderRadius: 20, padding: '4px 14px', fontSize: 12, cursor: 'pointer',
                 fontWeight: city === c ? 700 : 400,
-              }}>{c}</span>
+              }}>{c === 'All' ? t('all') : (lang === 'am' && c === 'Butajira' ? 'ቡታጅራ' : c)}</span>
             ))}
           </div>
         </div>
@@ -135,7 +138,7 @@ export default function Home({ onNav }) {
         {!search && (
           <div style={{ padding: '28px 0 0' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
-              <div style={{ fontSize: 16, fontWeight: 700, color: C.black }}>Browse by category</div>
+              <div style={{ fontSize: 16, fontWeight: 700, color: C.black }}>{t('browseByCategory')}</div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(96px, 1fr))', gap: 10 }}>
               {CATEGORIES.map(c => {
@@ -146,7 +149,7 @@ export default function Home({ onNav }) {
                     onMouseEnter={e => { e.currentTarget.style.borderColor = C.green; e.currentTarget.style.transform = 'translateY(-2px)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = '#eee'; e.currentTarget.style.transform = 'none'; }}>
                     <div style={{ fontSize: 26, marginBottom: 6 }}>{c.icon}</div>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: C.black, lineHeight: 1.3, marginBottom: 2 }}>{c.label}</div>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: C.black, lineHeight: 1.3, marginBottom: 2 }}>{categoryLabel(c.label, lang)}</div>
                     <div style={{ fontSize: 10, color: '#aaa' }}>{n}</div>
                   </div>
                 );

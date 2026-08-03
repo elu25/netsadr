@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLanguage } from '../i18n/LanguageContext';
 import { useLocation } from 'react-router-dom';
 import { C, SOCIALS } from '../data/constants';
 import logoIcon from '../assets/logo-icon.png';
@@ -70,7 +71,9 @@ export const SocialIcon = ({ type, size = 15 }) => {
 // ── Navbar ────────────────────────────────────────────────────
 export const Navbar = ({ onNav }) => {
   const { pathname } = useLocation();
+  const { lang, toggleLang, t } = useLanguage();
   const activePage = pathname === '/' ? 'home' : pathname.slice(1).split('/')[0];
+  const navLabels = { home: t('navHome'), jobs: t('navJobs'), institutions: t('navInstitutions') };
   return (
   <nav style={{ background: C.black, borderBottom: `3px solid ${C.gold}`, position: 'sticky', top: 0, zIndex: 100 }}>
     <div style={{ maxWidth: 1100, margin: '0 auto', padding: '0 20px', display: 'flex', alignItems: 'center', height: 56, gap: 14 }}>
@@ -83,8 +86,8 @@ export const Navbar = ({ onNav }) => {
             color: activePage === p ? C.gold : 'rgba(255,255,255,0.55)',
             padding: '5px 11px', fontSize: 12, cursor: 'pointer',
             fontWeight: activePage === p ? 700 : 400,
-            textTransform: 'capitalize', flexShrink: 0,
-          }}>{p}</button>
+            flexShrink: 0,
+          }}>{navLabels[p]}</button>
         ))}
       </div>
       <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center', flexShrink: 0 }}>
@@ -98,11 +101,17 @@ export const Navbar = ({ onNav }) => {
           ))}
           <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 4px' }} />
         </div>
+        <button onClick={toggleLang} title="Switch language / ቋንቋ ይቀይሩ" style={{
+          background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6,
+          color: 'rgba(255,255,255,0.7)', padding: '5px 10px', fontSize: 12, cursor: 'pointer', fontWeight: 700,
+        }}>
+          {lang === 'en' ? 'አማ' : 'EN'}
+        </button>
         <button className="navbar-login" style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.18)', borderRadius: 6, color: 'rgba(255,255,255,0.7)', padding: '5px 12px', fontSize: 12, cursor: 'pointer' }}>
           Login
         </button>
         <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 6, color: C.black, padding: '5px 12px', fontSize: 12, fontWeight: 700, cursor: 'pointer', whiteSpace: 'nowrap' }}>
-          + List Free
+          {t('listFree')}
         </button>
       </div>
     </div>
@@ -111,12 +120,15 @@ export const Navbar = ({ onNav }) => {
 };
 
 // ── Ticker ────────────────────────────────────────────────────
-export const Ticker = ({ text }) => (
+export const Ticker = ({ text }) => {
+  const { t } = useLanguage();
+  return (
   <div style={{ background: C.greenDark, padding: '6px 20px', display: 'flex', alignItems: 'center', gap: 12 }}>
-    <span style={{ color: C.amber, fontSize: 10, fontWeight: 700, letterSpacing: 1, whiteSpace: 'nowrap', borderRight: '1px solid rgba(255,255,255,0.2)', paddingRight: 10 }}>🔴 LIVE</span>
+    <span style={{ color: C.amber, fontSize: 10, fontWeight: 700, letterSpacing: 1, whiteSpace: 'nowrap', borderRight: '1px solid rgba(255,255,255,0.2)', paddingRight: 10 }}>🔴 {t('liveLabel')}</span>
     <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: 12, transition: 'opacity 0.3s' }}>{text}</span>
   </div>
-);
+  );
+};
 
 // ── Footer ────────────────────────────────────────────────────
 export const Footer = ({ onNav }) => (
