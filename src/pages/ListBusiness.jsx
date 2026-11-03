@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { C, CATEGORIES, CITIES } from '../data/constants';
 import logoIcon from '../assets/logo-icon.png';
 
-const STEPS = ['Basic Info', 'Location & Contact', 'Details', 'Done'];
+const STEPS = ['Basic Info', 'Location & Contact', 'Details', 'Send'];
+const WA_NUMBER = '251931631332';
 
 export default function ListBusiness({ onNav }) {
   const [step,   setStep]   = useState(0);
@@ -13,7 +14,25 @@ export default function ListBusiness({ onNav }) {
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
-  const next = () => setStep(s => Math.min(s + 1, 3));
+  const canContinue =
+    step === 0 ? form.name.trim() && form.category :
+    step === 1 ? form.city && form.phone.trim() :
+    step === 2 ? form.description.trim() : true;
+  const next = () => { if (canContinue) setStep(s => Math.min(s + 1, 3)); };
+
+  const waText = [
+    'New listing request for Netsadr.et',
+    `Business: ${form.name}`,
+    `Category: ${form.category}`,
+    `City: ${form.city}`,
+    `Phone: ${form.phone}`,
+    form.whatsapp && `WhatsApp: ${form.whatsapp}`,
+    form.email && `Email: ${form.email}`,
+    form.website && `Website: ${form.website}`,
+    `Plan: ${form.plan}`,
+    `Description: ${form.description}`,
+  ].filter(Boolean).join('\n');
+  const waLink = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waText)}`;
   const prev = () => setStep(s => Math.max(s - 1, 0));
 
   return (
@@ -24,7 +43,7 @@ export default function ListBusiness({ onNav }) {
         <div style={{ textAlign: 'center', marginBottom: 32 }}>
           <img src={logoIcon} alt="Netsadr" style={{ height: 52, width: 'auto', margin: '0 auto 14px', display: 'block' }} />
           <h1 style={{ fontSize: 24, fontWeight: 800, color: C.black, margin: '0 0 6px' }}>List your business free</h1>
-          <p style={{ fontSize: 14, color: '#888' }}>List your Butajira business free on Netsadr.et</p>
+          <p style={{ fontSize: 14, color: '#888' }}>List your business free on Netsadr.et</p>
         </div>
 
         {/* Step progress */}
@@ -154,11 +173,15 @@ export default function ListBusiness({ onNav }) {
           {step === 3 && (
             <div style={{ textAlign: 'center', padding: '20px 0' }}>
               <div style={{ width: 72, height: 72, background: C.greenLight, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: 36 }}>✅</div>
-              <h2 style={{ fontSize: 20, fontWeight: 800, color: C.black, margin: '0 0 10px' }}>Listing submitted!</h2>
-              <p style={{ fontSize: 14, color: '#666', marginBottom: 6, lineHeight: 1.7 }}>
-                Thank you, <strong>{form.name || 'your business'}</strong> has been submitted to Netsadr.et.<br />
-                We will review and publish it within 24 hours.
+              <h2 style={{ fontSize: 20, fontWeight: 800, color: C.black, margin: '0 0 10px' }}>One last step: send it to us</h2>
+              <p style={{ fontSize: 14, color: '#666', marginBottom: 16, lineHeight: 1.7 }}>
+                <strong>{form.name || 'Your business'}</strong> is <strong>not submitted yet</strong>. Press the button to send
+                your details to Netsadr on WhatsApp. We add listings by hand after we receive your message.
               </p>
+              <a href={waLink} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-block', background: '#25D366', color: '#fff', borderRadius: 10, padding: '12px 24px', fontSize: 14, fontWeight: 700, textDecoration: 'none', marginBottom: 18 }}>
+                Send on WhatsApp to finish
+              </a>
               <p style={{ fontSize: 13, color: '#aaa', marginBottom: 28 }}>
                 Questions? Call us: <strong style={{ color: C.green }}>+251 931 631 332</strong>
               </p>
@@ -181,9 +204,9 @@ export default function ListBusiness({ onNav }) {
                 style={{ background: step === 0 ? '#f0f0f0' : '#fff', border: '1px solid #e8e8e8', borderRadius: 8, color: step === 0 ? '#ccc' : '#555', padding: '10px 20px', fontSize: 13, cursor: step === 0 ? 'not-allowed' : 'pointer' }}>
                 ← Back
               </button>
-              <button onClick={next}
-                style={{ background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '10px 24px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
-                {step === 2 ? 'Submit listing ✓' : 'Continue →'}
+              <button onClick={next} disabled={!canContinue}
+                style={{ opacity: canContinue ? 1 : 0.5, background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '10px 24px', fontSize: 13, fontWeight: 700, cursor: canContinue ? 'pointer' : 'not-allowed' }}>
+                {step === 2 ? 'Review & send →' : 'Continue →'}
               </button>
             </div>
           )}

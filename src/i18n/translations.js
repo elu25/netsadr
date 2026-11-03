@@ -17,8 +17,8 @@ export const TRANSLATIONS = {
     liveLabel: 'LIVE',
 
     // Hero
-    heroKicker: "🇪🇹 Butajira's Free Business Directory",
-    heroTitlePrefix: 'Find Any Butajira ',
+    heroKicker: '🇪🇹 Free Business Directory · Butajira & Adama',
+    heroTitlePrefix: 'Find Any Local ',
     heroTitleHighlight: 'Business',
     heroTitleSuffix: ', Instantly',
     heroTagline: 'ነፃ ድር — Directory · Jobs · Institutions',
@@ -54,8 +54,8 @@ export const TRANSLATIONS = {
     listFree: '+ በነጻ ያስመዝግቡ',
     liveLabel: 'በቀጥታ',
 
-    heroKicker: '🇪🇹 የቡታጅራ ነጻ የንግድ ማውጫ',
-    heroTitlePrefix: 'ማንኛውንም የቡታጅራ ',
+    heroKicker: '🇪🇹 ነጻ የንግድ ማውጫ · ቡታጅራ እና አዳማ',
+    heroTitlePrefix: 'ማንኛውንም የአካባቢ ',
     heroTitleHighlight: 'ንግድ',
     heroTitleSuffix: ' በቅጽበት ያግኙ',
     heroTagline: 'ነፃ ድር — ማውጫ · ሥራዎች · ተቋማት',

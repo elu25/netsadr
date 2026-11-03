@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { C, CATEGORIES, LISTINGS, TICKERS } from '../data/constants';
 import { Stars, Badge, Ticker } from '../components/UI';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -17,10 +17,10 @@ export default function Home({ onNav }) {
   const [ticker, setTicker] = useState(0);
 
   // rotate ticker
-  useState(() => {
-    const t = setInterval(() => setTicker(i => (i + 1) % TICKERS.length), 3500);
-    return () => clearInterval(t);
-  });
+  useEffect(() => {
+    const id = setInterval(() => setTicker(i => (i + 1) % TICKERS.length), 3500);
+    return () => clearInterval(id);
+  }, []);
 
   // Cities computed from real listings only — don't advertise coverage
   // you don't have.
@@ -39,9 +39,9 @@ export default function Home({ onNav }) {
   };
 
   const filtered = LISTINGS.filter(l => {
-    const matchTab  = search ? true : l.tabs.includes(tab);
+    const matchTab  = (search || city !== 'All') ? true : l.tabs.includes(tab);
     const matchCity = city === 'All' || l.city === city;
-    const matchQ    = !search || l.name.toLowerCase().includes(search.toLowerCase()) || l.cat.toLowerCase().includes(search.toLowerCase()) || l.city.toLowerCase().includes(search.toLowerCase());
+    const matchQ    = !search || l.name.toLowerCase().includes(search.toLowerCase()) || (l.nameAm || '').includes(search) || l.cat.toLowerCase().includes(search.toLowerCase()) || l.city.toLowerCase().includes(search.toLowerCase());
     return matchTab && matchCity && matchQ;
   });
 
@@ -126,7 +126,7 @@ export default function Home({ onNav }) {
                 border: `1px solid ${city === c ? C.green : '#e8e8e8'}`,
                 borderRadius: 20, padding: '4px 14px', fontSize: 12, cursor: 'pointer',
                 fontWeight: city === c ? 700 : 400,
-              }}>{c === 'All' ? t('all') : (lang === 'am' && c === 'Butajira' ? 'ቡታጅራ' : c)}</span>
+              }}>{c === 'All' ? t('all') : (lang === 'am' && c === 'Butajira' ? 'ቡታጅራ' : lang === 'am' && c === 'Adama' ? 'አዳማ' : c)}</span>
             ))}
           </div>
         </div>
@@ -161,7 +161,7 @@ export default function Home({ onNav }) {
         {/* ── LISTINGS ── */}
         <div id="listings-section" style={{ marginTop: 32 }}>
           <div style={{ display: 'flex', gap: 3, borderBottom: `2px solid ${C.greenLight}` }}>
-            {[['featured','⭐ Featured'],['toprated','🏆 Top Rated'],['new','🆕 New'],['wholesale','📦 Wholesale']].map(([t, label]) => (
+            {[['featured','⭐ Featured'],['toprated','🏆 Top Rated'],['new','🆕 New']].map(([t, label]) => (
               <button key={t} onClick={() => { setTab(t); setSearch(''); }} style={{
                 background: tab === t ? '#fff' : 'transparent',
                 border: `1px solid ${tab === t ? C.greenLight : 'transparent'}`,
@@ -248,7 +248,7 @@ export default function Home({ onNav }) {
           <div>
             <div style={{ color: C.gold, fontSize: 10, fontWeight: 700, letterSpacing: 1, marginBottom: 6 }}>FOR BUSINESS OWNERS</div>
             <h3 style={{ color: '#fff', fontSize: 20, fontWeight: 700, margin: '0 0 6px' }}>Grow with Netsadr.et — it's free</h3>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Get found by customers searching for businesses in Butajira.</p>
+            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 13, margin: 0 }}>Get found by customers searching for businesses in Butajira and Adama.</p>
           </div>
           <div style={{ display: 'flex', gap: 10 }}>
             <button onClick={() => onNav('list')} style={{ background: C.gold, border: 'none', borderRadius: 8, color: C.black, padding: '10px 20px', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>

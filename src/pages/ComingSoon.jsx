@@ -11,7 +11,7 @@ export default function ComingSoon({ title, onNav }) {
         <div style={{ fontSize: 44, marginBottom: 14 }}>🚧</div>
         <h1 style={{ fontSize: 22, fontWeight: 800, color: C.black, marginBottom: 8 }}>{title} — coming soon</h1>
         <p style={{ fontSize: 14, color: '#888', lineHeight: 1.6, marginBottom: 24 }}>
-          We're focused on getting the Butajira business directory live first.
+          We're focused on getting the business directory live first.
           {title} will launch once there's real demand to support it.
         </p>
         <button onClick={() => onNav('home')} style={{ background: C.green, border: 'none', borderRadius: 10, color: '#fff', padding: '12px 24px', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>

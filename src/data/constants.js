@@ -1,5 +1,6 @@
 import { DANAYIT_CAFE_MENU } from './danayit-cafe-menu';
 import { BATCH_2_LISTINGS } from './batch2-listings';
+import { ADAMA_LISTINGS } from './adama-listings';
 
 // ── Brand Colors ─────────────────────────────────────────────
 export const C = {
@@ -67,17 +68,17 @@ export const CATEGORIES = [
 // numbers here either. phone is blank until you collect real ones;
 // ListingDetail hides the Call/WhatsApp buttons when phone is empty.
 export const INSTITUTIONS = [
-  { id:101, name:'Butajira Ethiopian Orthodox Church',           type:'Church',     cat:'Church',     city:'Butajira', emoji:'⛪', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
-  { id:102, name:'Butajira Grand Mosque',                        type:'Mosque',     cat:'Mosque',     city:'Butajira', emoji:'🕌', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
-  { id:103, name:'Butajira Water Supply Office',                 type:'Utility',    cat:'Utility',    city:'Butajira', emoji:'🚰', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
-  { id:104, name:'Ethiopian Electric Utility – Butajira Branch', type:'Utility',    cat:'Utility',    city:'Butajira', emoji:'⚡', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
-  { id:105, name:'Butajira Woreda Administration Office',        type:'Government', cat:'Government', city:'Butajira', emoji:'🏛', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
+  { id:401, name:'Butajira Ethiopian Orthodox Church',           type:'Church',     cat:'Church',     city:'Butajira', emoji:'⛪', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
+  { id:402, name:'Butajira Grand Mosque',                        type:'Mosque',     cat:'Mosque',     city:'Butajira', emoji:'🕌', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
+  { id:403, name:'Butajira Water Supply Office',                 type:'Utility',    cat:'Utility',    city:'Butajira', emoji:'🚰', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
+  { id:404, name:'Ethiopian Electric Utility – Butajira Branch', type:'Utility',    cat:'Utility',    city:'Butajira', emoji:'⚡', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
+  { id:405, name:'Butajira Woreda Administration Office',        type:'Government', cat:'Government', city:'Butajira', emoji:'🏛', rating:0, reviews:0, badge:'new', tabs:[], phone:'', desc:'' },
 ];
 
 // ── Cities ────────────────────────────────────────────────────
-// Butajira only, matching current scope. Add a city here only once
-// you're actually accepting and publishing listings from it.
-export const CITIES = ['Butajira'];
+// Cities with real listings. Add a city here only once you're actually
+// accepting and publishing listings from it.
+export const CITIES = ['Butajira', 'Adama'];
 
 // ── Ticker messages ───────────────────────────────────────────
 // Keep these true. Swap in real listing names as you seed — do not
@@ -204,54 +205,23 @@ export const LISTINGS = [
   { id:118, name:'Meki Electronics', nameAm:'መኪ ኤሌክትሮኒክስ', cat:'Tech & IT', city:'Butajira', emoji:'💻', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'', desc:'Electronics and computer sales.' },
   { id:119, name:'Tare Smart Phone', nameAm:'ታሬ ስማርት ፎን', cat:'Tech & IT', city:'Butajira', emoji:'📱', rating:0, reviews:0, badge:'new', tabs:['new'], phone:'+251927016629', desc:'Mobile phone shop.' },
   ...BATCH_2_LISTINGS,
+  ...ADAMA_LISTINGS,
 ];
 
 // ── Pricing Plans ─────────────────────────────────────────────
+// Must match the plan boxes in ListBusiness.jsx. Only list features that
+// actually exist on the site today.
 export const PLANS = [
-  {
-    name: 'Free',
-    price: 0,
-    color: C.green,
-    features: [
-      'Basic business listing',
-      'Business name & phone',
-      'City and category',
-      '1 photo',
-      'Standard search ranking',
-    ],
-    cta: 'Get started free',
-  },
-  {
-    name: 'Standard',
-    price: 800,
-    color: C.green,
-    badge: 'Popular',
-    features: [
-      'Everything in Free',
-      'Full photo gallery (10 photos)',
-      'WhatsApp connect button',
-      'Business description',
-      'Opening hours',
-      'Priority in category search',
-      'Monthly analytics report',
-    ],
-    cta: 'Start Standard',
-  },
-  {
-    name: 'Premium',
-    price: 2500,
-    color: C.gold,
-    badge: '⭐ Best',
-    features: [
-      'Everything in Standard',
-      'Featured on homepage',
-      'Gold verified badge',
-      'Top of all search results',
-      'Unlimited photos',
-      'Video embed',
-      'Dedicated account manager',
-      'Social media promotion',
-    ],
-    cta: 'Go Premium',
-  },
+  { name: 'Free', price: 0, color: C.green,
+    features: ['Basic business listing', 'Business name & phone', 'City and category', 'Standard search ranking'],
+    cta: 'Get started free' },
+  { name: 'Basic', price: 299, color: C.green,
+    features: ['Everything in Free', '2 photos', 'Get-directions link'],
+    cta: 'Start Basic' },
+  { name: 'Standard', price: 499, color: C.green, badge: 'Popular',
+    features: ['Everything in Basic', '5 photos', 'Instagram link'],
+    cta: 'Start Standard' },
+  { name: 'Premium', price: 999, color: C.gold, badge: '⭐ Best',
+    features: ['Everything in Standard', '10 photos'],
+    cta: 'Go Premium' },
 ];
