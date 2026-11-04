@@ -138,7 +138,7 @@ export const Footer = ({ onNav }) => (
         <div>
           <Logo />
           <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: 12, marginTop: 12, lineHeight: 1.8 }}>
-            Butajira's free business directory.<br />
+            Free business directory — Butajira & Adama.<br />
             ነፃ ድር — ሁሉንም ኢትዮጵያ
           </p>
           <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>

@@ -43,12 +43,7 @@ export default function Pricing({ onNav }) {
                   </span>
                   {plan.price > 0 && <span style={{ fontSize: 13, color: isPremium ? 'rgba(255,255,255,0.45)' : '#aaa', paddingBottom: 6 }}>/month</span>}
                 </div>
-                {plan.price > 0 && (
-                  <div style={{ fontSize: 11, color: isPremium ? 'rgba(255,255,255,0.3)' : '#bbb', marginBottom: 20 }}>
-                    ETB {(plan.price * 12).toLocaleString()} billed annually
-                  </div>
-                )}
-                {plan.price === 0 && <div style={{ height: 20, marginBottom: 20 }} />}
+                <div style={{ height: 20, marginBottom: 20 }} />
 
                 <div style={{ borderTop: `1px solid ${isPremium ? 'rgba(201,168,76,0.15)' : '#f0f0f0'}`, paddingTop: 20, marginBottom: 24 }}>
                   {plan.features.map(f => (
@@ -77,10 +72,10 @@ export default function Pricing({ onNav }) {
           <h2 style={{ fontSize: 20, fontWeight: 700, color: C.black, textAlign: 'center', marginBottom: 24 }}>Frequently asked questions</h2>
           {[
             ['Is the free listing really free?',           'Yes, 100% free forever. No credit card required. You can list your business name, phone, city and category at no cost.'],
-            ['How do I pay for Standard or Premium?',      'You can pay via Telebirr, CBE Birr, or bank transfer. Contact us on +251 931 631 332 and we will set it up for you.'],
-            ['How long does it take to appear online?',    'Free listings appear within 24 hours. Standard and Premium listings are reviewed and published within a few hours.'],
-            ['Can I upgrade from Free to Standard later?', 'Yes, you can upgrade anytime. Just contact us and we will update your listing immediately.'],
-            ['Do you serve businesses outside Butajira?',  'Right now we\'re focused on Butajira only, to make sure the directory works well before expanding to other cities.'],
+            ['How do I pay for a paid plan?',      'You can pay via Telebirr, CBE Birr, or bank transfer. Contact us on +251 931 631 332 and we will set it up for you.'],
+            ['How long does it take to appear online?',    'Free listings appear within 24 hours. Paid listings are published after payment is confirmed.'],
+            ['Can I upgrade from Free to a paid plan later?', 'Yes, you can upgrade anytime. Just contact us and we will update your listing immediately.'],
+            ['Do you serve businesses outside Butajira and Adama?',  'Right now we cover Butajira and Adama. More cities are planned, but we only add a city once we have real listings there.'],
           ].map(([q, a]) => (
             <div key={q} style={{ background: '#fff', border: '1px solid #eee', borderRadius: 12, padding: '16px 20px', marginBottom: 10 }}>
               <div style={{ fontSize: 14, fontWeight: 700, color: C.black, marginBottom: 8 }}>{q}</div>

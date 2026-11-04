@@ -5,10 +5,10 @@ export default function Privacy() {
     <div style={{ background: '#F7F7F6', minHeight: '100vh', padding: '32px 20px' }}>
       <div style={{ maxWidth: 700, margin: '0 auto', background: '#fff', borderRadius: 16, border: '1px solid #eee', padding: '32px 28px' }}>
         <h1 style={{ fontSize: 24, fontWeight: 800, color: C.black, marginBottom: 6 }}>Privacy Policy</h1>
-        <p style={{ fontSize: 13, color: '#aaa', marginBottom: 24 }}>Last updated: July 2026</p>
+        <p style={{ fontSize: 13, color: '#aaa', marginBottom: 24 }}>Last updated: November 2026</p>
 
         <p style={{ fontSize: 14, color: '#444', lineHeight: 1.8, marginBottom: 20 }}>
-          Netsadr.et is a free business directory for Butajira, Ethiopia. This page explains, plainly, what
+          Netsadr.et is a free business directory for Butajira and Adama, Ethiopia. This page explains, plainly, what
           happens to information on this site and through the Netsadr Telegram bot.
         </p>
 
@@ -21,7 +21,8 @@ export default function Privacy() {
         <p style={{ fontSize: 14, color: '#444', lineHeight: 1.8, marginBottom: 12 }}>
           The "List Your Business" form asks for a business name, category, phone number, and description.
           As of this writing, this site has no backend server or database — information entered in that
-          form is not stored or transmitted anywhere automatically. Business owners who want to be listed
+          form is not stored or transmitted anywhere automatically. At the end of the form you can choose to send
+          the details to us yourself in a WhatsApp message; nothing is sent unless you press that button. Business owners who want to be listed
           should also contact us directly (phone or email below) so a listing can be added manually. If
           this changes in the future — for example, if the form starts saving directly to a database — this
           page will be updated to say so before that happens.
